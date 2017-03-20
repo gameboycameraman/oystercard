@@ -1,0 +1,9 @@
+Questions to answer to :
+
+Explain what RVM is and how you use it.
+  Ruby version manager helps us to change version of ruby, they can be newer or older and may accept gems a different vesion wouldn't.
+
+Explain how Ruby gems help reuse code across projects.
+
+Explain how do you use Bundler to manage Ruby gems.
+Explain the structure of a Gemfile.
