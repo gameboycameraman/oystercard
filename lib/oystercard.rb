@@ -22,6 +22,14 @@ attr_reader :balance, :in_journey
     self.in_journey = true
   end
 
+  def touch_out
+    self.in_journey = false
+  end
+
+  def in_journey?
+    in_journey
+  end
+
   private
 
   attr_writer :balance, :in_journey

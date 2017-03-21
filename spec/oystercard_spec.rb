@@ -23,9 +23,19 @@ describe Oystercard do
     expect(oystercard.deduct).to eq maximum_amount - Oystercard::FARE
   end
 
-  it "changes in_journey to true when we touch_in" do
+  it "changes in_journey to true when touching in" do
     oystercard.touch_in
     expect(oystercard.in_journey).to eq true
+  end
+
+  it "changes in_journey to false when touching out" do
+    oystercard.touch_in
+    oystercard.touch_out
+    expect(oystercard.in_journey).to eq false
+  end
+
+  it "checks if card is in journey" do
+    expect(oystercard.in_journey?).to eq false
   end
 
 end
