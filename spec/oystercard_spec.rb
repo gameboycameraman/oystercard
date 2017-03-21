@@ -3,6 +3,7 @@ require "oystercard"
 describe Oystercard do
   subject(:oystercard) {described_class.new}
   maximum_amount = Oystercard::TOP_UP_LIMIT
+  let (:entry_station) { double(:entry_station) }
 
   it "want a default balance of 0 on the card" do
     expect(oystercard.balance).to eq 0
@@ -26,15 +27,15 @@ describe Oystercard do
 
   it "changes in_journey to true when touching in" do
     oystercard.top_up(maximum_amount)
-    oystercard.touch_in
-    expect(oystercard.travelling).to eq true
+    oystercard.touch_in(entry_station)
+    expect(oystercard.in_journey?).to eq true
   end
 
   it "changes in_journey to false when touching out" do
     oystercard.top_up(maximum_amount)
-    oystercard.touch_in
+    oystercard.touch_in(entry_station)
     oystercard.touch_out
-    expect(oystercard.travelling).to eq false
+    expect(oystercard.in_journey?).to eq false
   end
 
   it "checks if card is in journey" do
@@ -42,6 +43,20 @@ describe Oystercard do
   end
 
   it "raises error is unsufficient funds when touch_in" do
-    expect { oystercard.touch_in }.to raise_error "Sorry love, I want more money"
+    expect { oystercard.touch_in(entry_station) }.to raise_error "Sorry love, I want more money"
   end
+
+  it "save the entry station when touch_in" do
+    oystercard.top_up(maximum_amount)
+    oystercard.touch_in(entry_station)
+    expect(oystercard.entry_station).to eq (entry_station)
+  end
+
+  it "forgets the station entry when touch_out" do
+    oystercard.top_up(maximum_amount)
+    oystercard.touch_in(entry_station)
+    oystercard.touch_out
+    expect(oystercard.entry_station).to eq nil
+  end
+
 end
