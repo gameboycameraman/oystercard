@@ -2,6 +2,7 @@ require "oystercard"
 
 describe Oystercard do
   subject(:oystercard) {described_class.new}
+  maximum_amount = Oystercard::TOP_UP_LIMIT
 
   it "want a default balance of 0 on the card" do
     expect(oystercard.balance).to eq 0
@@ -13,8 +14,18 @@ describe Oystercard do
   end
 
   it "raises error when maximum limit #{Oystercard::TOP_UP_LIMIT} is exceeded" do
-    maximum_amount = Oystercard::TOP_UP_LIMIT
     oystercard.top_up(maximum_amount)
     expect{ oystercard.top_up(1) }.to raise_error "Maximum limit of £#{maximum_amount} exceeded"
   end
+
+  it "deduct a fare from the card" do
+    oystercard.top_up(maximum_amount)
+    expect(oystercard.deduct).to eq maximum_amount - Oystercard::FARE
+  end
+
+  it "changes in_journey to true when we touch_in" do
+    oystercard.touch_in
+    expect(oystercard.in_journey).to eq true
+  end
+
 end
