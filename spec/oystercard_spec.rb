@@ -18,24 +18,30 @@ describe Oystercard do
     expect{ oystercard.top_up(1) }.to raise_error "Maximum limit of £#{maximum_amount} exceeded"
   end
 
-  it "deduct a fare from the card" do
+  it "deduct a fare from the card when touch out" do
     oystercard.top_up(maximum_amount)
-    expect(oystercard.deduct).to eq maximum_amount - Oystercard::FARE
+    oystercard.touch_out
+    expect(oystercard.balance).to eq maximum_amount - Oystercard::FARE
   end
 
   it "changes in_journey to true when touching in" do
+    oystercard.top_up(maximum_amount)
     oystercard.touch_in
-    expect(oystercard.in_journey).to eq true
+    expect(oystercard.travelling).to eq true
   end
 
   it "changes in_journey to false when touching out" do
+    oystercard.top_up(maximum_amount)
     oystercard.touch_in
     oystercard.touch_out
-    expect(oystercard.in_journey).to eq false
+    expect(oystercard.travelling).to eq false
   end
 
   it "checks if card is in journey" do
     expect(oystercard.in_journey?).to eq false
   end
 
+  it "raises error is unsufficient funds when touch_in" do
+    expect { oystercard.touch_in }.to raise_error "Sorry love, I want more money"
+  end
 end
