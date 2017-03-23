@@ -24,8 +24,8 @@ attr_reader :balance, :entry_station, :journeys, :current_journey
 
   def touch_out(leaving_station)
     deduct
-    journeys << {entry_station => leaving_station}
-    self.entry_station = nil
+    journeys << {current_journey.entry_station => leaving_station}
+    self.current_journey = Journey.new(nil)
   end
 
   def in_journey?
@@ -34,7 +34,7 @@ attr_reader :balance, :entry_station, :journeys, :current_journey
 
   private
 
-  attr_writer :balance, :entry_station,
+  attr_writer :balance, :entry_station, :current_journey
 
   def deduct
     self.balance -= FARE

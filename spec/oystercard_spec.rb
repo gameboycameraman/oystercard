@@ -5,7 +5,9 @@ describe Oystercard do
   maximum_amount = Oystercard::TOP_UP_LIMIT
   let (:entry_station) { double(:entry_station) }
   let (:exit_station) { double(:exit_station)}
-  let (:fakestation) {double(:station)}
+
+  let (:fake_entry_station) {double(:station)}
+  let (:fake_exit_station) {double(:station)}
 
   it "want a default balance of 0 on the card" do
     expect(oystercard.balance).to eq 0
@@ -23,26 +25,27 @@ describe Oystercard do
 
   it "deduct a fare from the card when touch out" do
     oystercard.top_up(maximum_amount)
-    oystercard.touch_out(exit_station)
+    oystercard.touch_in(fake_entry_station)
+    oystercard.touch_out(fake_exit_station)
     expect(oystercard.balance).to eq maximum_amount - Oystercard::FARE
   end
 
   it "changes in_journey to true when touching in" do
     oystercard.top_up(maximum_amount)
-    oystercard.touch_in(entry_station)
+    oystercard.touch_in(fake_entry_station)
     expect(oystercard.in_journey?).to eq true
   end
 
   it "changes in_journey to false when touching out" do
     oystercard.top_up(maximum_amount)
-    oystercard.touch_in(entry_station)
-    oystercard.touch_out(exit_station)
+    oystercard.touch_in(fake_entry_station)
+    oystercard.touch_out(fake_exit_station)
     expect(oystercard.in_journey?).to eq false
   end
 
   it "checks if card is in journey" do
     oystercard.top_up(maximum_amount)
-    oystercard.touch_in(fakestation)
+    oystercard.touch_in(fake_entry_station)
     expect(oystercard.in_journey?).to eq true
   end
 
@@ -52,8 +55,8 @@ describe Oystercard do
 
   it "save the entry station when touch_in" do
     oystercard.top_up(maximum_amount)
-    oystercard.touch_in(entry_station)
-    expect(oystercard.entry_station).to eq (entry_station)
+    oystercard.touch_in(fake_entry_station)
+    expect(oystercard.current_journey.entry_station).to eq (fake_entry_station)
   end
 
   it "forgets the station entry when touch_out" do
