@@ -2,13 +2,12 @@ class Oystercard
 
 TOP_UP_LIMIT = 90
 FARE = 1
-attr_reader :balance, :entry_station, :journeys, :current_journey
+attr_reader :balance, :journeys, :current_journey, :entry_station
 
   def initialize
     @balance = 0
-    #@entry_station = nil
     @journeys = []
-    @current_journey = nil
+    @current_journey = Journey.new(nil)
   end
 
   def top_up(money)
@@ -19,7 +18,6 @@ attr_reader :balance, :entry_station, :journeys, :current_journey
   def touch_in(station_name)
     fail "Sorry love, I want more money" if balance < FARE
     @current_journey = Journey.new(station_name)
-    #self.entry_station = station_name
   end
 
   def touch_out(leaving_station)
@@ -34,7 +32,7 @@ attr_reader :balance, :entry_station, :journeys, :current_journey
 
   private
 
-  attr_writer :balance, :entry_station, :current_journey
+  attr_writer :balance, :current_journey
 
   def deduct
     self.balance -= FARE
