@@ -5,6 +5,7 @@ describe Oystercard do
   maximum_amount = Oystercard::TOP_UP_LIMIT
   let (:entry_station) { double(:entry_station) }
   let (:exit_station) { double(:exit_station)}
+  let (:fakestation) {double(:station)}
 
   it "want a default balance of 0 on the card" do
     expect(oystercard.balance).to eq 0
@@ -40,7 +41,9 @@ describe Oystercard do
   end
 
   it "checks if card is in journey" do
-    expect(oystercard.in_journey?).to eq false
+    oystercard.top_up(maximum_amount)
+    oystercard.touch_in(fakestation)
+    expect(oystercard.in_journey?).to eq true
   end
 
   it "raises error is unsufficient funds when touch_in" do
