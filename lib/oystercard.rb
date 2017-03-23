@@ -1,7 +1,7 @@
 class Oystercard
 
 TOP_UP_LIMIT = 90
-FARE = 2.40
+FARE = 1
 attr_reader :balance, :entry_station, :journeys
 
   def initialize
