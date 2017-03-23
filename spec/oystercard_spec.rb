@@ -77,4 +77,10 @@ describe Oystercard do
     expect(oystercard.journeys).to include(entry_station => exit_station)
   end
 
+  it 'deducts penalty fare on touch_in if there already is an entry station' do
+    oystercard.top_up 10
+    oystercard.touch_in(entry_station)
+    expect {oystercard.touch_in(entry_station)}.to change{oystercard.balance}.by -6
+  end
+
 end
