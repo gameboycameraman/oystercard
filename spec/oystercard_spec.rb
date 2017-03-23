@@ -4,6 +4,7 @@ describe Oystercard do
   subject(:oystercard) {described_class.new}
   maximum_amount = Oystercard::TOP_UP_LIMIT
   let (:entry_station) { double(:entry_station) }
+  let (:exit_station) { double(:exit_station)}
 
   it "want a default balance of 0 on the card" do
     expect(oystercard.balance).to eq 0
@@ -21,7 +22,7 @@ describe Oystercard do
 
   it "deduct a fare from the card when touch out" do
     oystercard.top_up(maximum_amount)
-    oystercard.touch_out
+    oystercard.touch_out(exit_station)
     expect(oystercard.balance).to eq maximum_amount - Oystercard::FARE
   end
 
@@ -34,7 +35,7 @@ describe Oystercard do
   it "changes in_journey to false when touching out" do
     oystercard.top_up(maximum_amount)
     oystercard.touch_in(entry_station)
-    oystercard.touch_out
+    oystercard.touch_out(exit_station)
     expect(oystercard.in_journey?).to eq false
   end
 
@@ -55,8 +56,19 @@ describe Oystercard do
   it "forgets the station entry when touch_out" do
     oystercard.top_up(maximum_amount)
     oystercard.touch_in(entry_station)
-    oystercard.touch_out
+    oystercard.touch_out(exit_station)
     expect(oystercard.entry_station).to eq nil
+  end
+
+  it "has an empty list of journeys by default" do
+    expect(oystercard.journeys).to be_empty
+  end
+
+  it "creates a journey when touching in and out" do
+    oystercard.top_up(maximum_amount)
+    oystercard.touch_in(entry_station)
+    oystercard.touch_out(exit_station)
+    expect(oystercard.journeys).to include(entry_station => exit_station)
   end
 
 end
