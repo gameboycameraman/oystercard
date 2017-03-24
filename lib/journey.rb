@@ -21,4 +21,9 @@ PENALTY_FARE = 6
     MINIMUM_FARE
   end
 
+  def is_complete?
+    !entry_station
+    # same as entry_station.nil?
+  end
+
 end

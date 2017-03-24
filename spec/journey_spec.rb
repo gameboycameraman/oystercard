@@ -59,6 +59,14 @@ let(:finish_station) {double :f_station}
       journey.start(start_station)
       expect(journey.is_complete?).to eq false
     end
+
+    it "returns true if journey started and finished" do
+      journey.start(start_station)
+      journey.finish(finish_station)
+      expect(journey.is_complete?).to eq true
+    end
+
+
   end
 
 
