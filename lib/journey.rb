@@ -8,7 +8,9 @@ class Journey
   end
 
   def finish(finish_station)
+    journey = {entry_station => finish_station}
     @entry_station = nil
+    journey
   end
 
 end

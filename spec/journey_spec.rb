@@ -33,5 +33,17 @@ let(:finish_station) {double :f_station}
     end
   end
 
+  describe "#fare" do
+    # in order to be correctly charged
+    # as a customer
+    # calculate the correct fare
+
+    it "returns the minimum fare" do
+      journey.start(start_station)
+      trip = journey.finish(finish_station)
+      expect(journey.fare(trip)).to eq Journey::MINIMUM_FARE
+    end
+  end
+
 
 end
