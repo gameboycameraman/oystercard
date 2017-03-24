@@ -35,7 +35,7 @@ attr_reader :balance, :list_of_journeys, :journey
   private
 
   attr_writer :balance, :list_of_journeys, :journey
-  
+
   def balance_too_low?
     balance < Journey::MINIMUM_FARE
   end

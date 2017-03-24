@@ -15,6 +15,11 @@ let(:finish_station) {double :f_station}
       journey.start(start_station)
       expect(journey.entry_station).to eq start_station
     end
+
+    it "raises error if touch in twice" do
+      journey.start(start_station)
+      expect{journey.start(start_station)}.to
+    end
   end
 
   describe "#finish" do
@@ -44,9 +49,13 @@ let(:finish_station) {double :f_station}
       expect(journey.fare(trip)).to eq Journey::MINIMUM_FARE
     end
 
-    it "returns the penalty fare if no entry" do
+    it "returns the penalty fare if no entry station" do
       unfinished_trip = journey.finish(finish_station)
       expect(journey.fare(unfinished_trip)).to eq Journey::PENALTY_FARE
+    end
+
+    it "returns the penalty fare if no exit" do
+      journey
     end
 
   end
@@ -65,9 +74,9 @@ let(:finish_station) {double :f_station}
       journey.finish(finish_station)
       expect(journey.is_complete?).to eq true
     end
-
-
   end
+
+
 
 
 end

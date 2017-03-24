@@ -6,7 +6,16 @@ PENALTY_FARE = 6
   attr_reader :entry_station
   attr_writer :entry_station
 
+  def initialize(entry_station = nil)
+    @entry_station = entry_station
+  end
+
   def start(start_station)
+    # if @entry_station != nil
+    #   method_name
+    #   fail "You never touched out!"
+    # end
+    fare({nil => nil}) if entry_station != nil
     @entry_station = start_station
   end
 
@@ -24,6 +33,12 @@ PENALTY_FARE = 6
   def is_complete?
     !entry_station
     # same as entry_station.nil?
+  end
+
+  private
+
+  def entry_station_reset
+    @entry_station = nil
   end
 
 end
