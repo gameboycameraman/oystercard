@@ -44,11 +44,21 @@ let(:finish_station) {double :f_station}
       expect(journey.fare(trip)).to eq Journey::MINIMUM_FARE
     end
 
-    it "gives a penalty of 6 if no entry" do
+    it "returns the penalty fare if no entry" do
       unfinished_trip = journey.finish(finish_station)
       expect(journey.fare(unfinished_trip)).to eq Journey::PENALTY_FARE
     end
 
+  end
+
+  describe "#is_complete?" do
+    # in order to be correctly charged
+    # as a customer
+    # returns whether or not journey is complete?
+    it "returns false if journey started, but not finished" do
+      journey.start(start_station)
+      expect(journey.is_complete?).to eq false
+    end
   end
 
 

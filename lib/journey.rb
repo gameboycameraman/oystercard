@@ -1,6 +1,7 @@
 class Journey
 
 MINIMUM_FARE = 1
+PENALTY_FARE = 6
 
   attr_reader :entry_station
   attr_writer :entry_station
@@ -16,6 +17,7 @@ MINIMUM_FARE = 1
   end
 
   def fare(trip)
+    return PENALTY_FARE if trip.all? { |k, v| k.nil? || v.nil?}
     MINIMUM_FARE
   end
 
