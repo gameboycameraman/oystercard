@@ -1,11 +1,22 @@
 require 'journey'
 
+
 describe Journey do
+subject(:journey) {described_class.new}
 
-subject(:journey) {described_class.new("Highbury")}
+let(:station) {double :station}
 
-  it 'has an entry_station' do
-    expect(journey.entry_station).to eq "Highbury"
+  describe "#start" do
+
+    # in order to be correctly charged
+    # as a customer
+    # record entry station
+
+    it "assigns an entry station" do
+      journey.start(station)
+      expect(journey.station).to eq station
+    end
+
   end
 
 end
