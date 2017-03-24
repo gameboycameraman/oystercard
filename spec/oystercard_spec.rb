@@ -1,4 +1,5 @@
 require "oystercard"
+require "journey"
 
 describe Oystercard do
   subject(:oystercard) {described_class.new}
@@ -22,8 +23,9 @@ describe Oystercard do
 
   it "deduct a fare from the card when touch out" do
     oystercard.top_up(maximum_amount)
+    oystercard.touch_in(entry_station)
     oystercard.touch_out(exit_station)
-    expect(oystercard.balance).to eq maximum_amount - Oystercard::FARE
+    expect(oystercard.balance).to eq maximum_amount - Journey::MINIMUM_FARE
   end
 
   it "changes in_journey to true when touching in" do
@@ -47,28 +49,15 @@ describe Oystercard do
     expect { oystercard.touch_in(entry_station) }.to raise_error "Sorry love, I want more money"
   end
 
-  it "save the entry station when touch_in" do
-    oystercard.top_up(maximum_amount)
-    oystercard.touch_in(entry_station)
-    expect(oystercard.entry_station).to eq (entry_station)
-  end
-
-  it "forgets the station entry when touch_out" do
-    oystercard.top_up(maximum_amount)
-    oystercard.touch_in(entry_station)
-    oystercard.touch_out(exit_station)
-    expect(oystercard.entry_station).to eq nil
-  end
-
   it "has an empty list of journeys by default" do
-    expect(oystercard.journeys).to be_empty
+    expect(oystercard.list_of_journeys).to be_empty
   end
 
   it "creates a journey when touching in and out" do
     oystercard.top_up(maximum_amount)
     oystercard.touch_in(entry_station)
     oystercard.touch_out(exit_station)
-    expect(oystercard.journeys).to include(entry_station => exit_station)
+    expect(oystercard.list_of_journeys).to include(entry_station => exit_station)
   end
 
 end
