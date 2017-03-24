@@ -43,6 +43,12 @@ let(:finish_station) {double :f_station}
       trip = journey.finish(finish_station)
       expect(journey.fare(trip)).to eq Journey::MINIMUM_FARE
     end
+
+    it "gives a penalty of 6 if no entry" do
+      unfinished_trip = journey.finish(finish_station)
+      expect(journey.fare(unfinished_trip)).to eq Journey::PENALTY_FARE
+    end
+
   end
 
 
